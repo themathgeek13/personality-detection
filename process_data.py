@@ -95,15 +95,14 @@ def load_bin_vec(fname, vocab):
         binary_len = np.dtype(theano.config.floatX).itemsize * layer1_size
         for line in xrange(vocab_size):
             word = []
-            while True:
-                ch = f.read(1)
-                if ch == ' ':
-                    word = ''.join(word)
-                    break
-                if ch != '\n':
-                    word.append(ch)
-            if word in vocab:
-               word_vecs[word] = np.fromstring(f.read(binary_len), dtype=theano.config.floatX)
+            ch = f.read(1)
+            if ch == ' ':
+                word = ''.join(word)
+                break
+            if ch != '\n':
+                word.append(ch)
+            if tuple(word) in vocab:
+               word_vecs[tuple(word)] = np.fromstring(f.read(binary_len), dtype=theano.config.floatX)
             else:
                 f.read(binary_len)
     return word_vecs
